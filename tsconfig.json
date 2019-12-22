@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "lib": [ "dom", "dom.iterable", "esnext" ],
+    "module": "commonjs",
+    "target": "es5",
+  },
+  "typedocOptions": {
+    "out": "public/docs",
+  },
+}

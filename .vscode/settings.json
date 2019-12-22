@@ -1,0 +1,16 @@
+{
+  "eslint.validate": [
+    "javascript",
+    "svelte",
+    "typescript",
+  ],
+  "files.associations": {
+    "Dockerfile*": "dockerfile",
+  },
+  "vsicons.associations.files": [
+    { "extensions": [ "svelte.config.js" ], "filename": true, "icon": "svelte" },
+  ],
+  "vsicons.associations.folders": [
+    { "extensions": [ "dictionary" ], "icon": "library" },
+  ],
+}

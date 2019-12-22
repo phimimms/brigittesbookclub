@@ -1,0 +1,23 @@
+version: "3"
+
+volumes:
+  mongostorage:
+
+services:
+  app:
+    container_name: brigittesbookclub
+    restart: always
+    build: .
+    ports:
+      - "80:80"
+    links:
+      - mongo
+  mongo:
+    container_name: mongo
+    build:
+      context: .
+      dockerfile: ./Dockerfile-mongo
+    volumes:
+      - mongostorage:/data/db
+    ports:
+      - "27017:27017"
