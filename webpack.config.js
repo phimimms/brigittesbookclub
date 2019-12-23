@@ -88,7 +88,7 @@ module.exports = function() {
     devtool: isDev ? 'inline-source-map' : 'source-map',
 
     entry: {
-      app: './src/client/index.ts',
+      app: './src/client/index.js',
     },
 
     module: {

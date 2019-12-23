@@ -58,7 +58,7 @@ module.exports = {
     'no-floating-decimal': 2,
     'no-implicit-globals': 2,
     'no-implied-eval': 2,
-    'no-invalid-this': 2,
+    'no-invalid-this': 0,
     'no-iterator': 2,
     'no-lone-blocks': 2,
     'no-loop-func': 2,

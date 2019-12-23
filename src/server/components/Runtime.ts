@@ -20,21 +20,18 @@ export default class Runtime {
   onRegisterEventHandlers(): void {
     process.stdin.resume();
 
-    process.on('SIGINT', this.onEndProcess);
-    process.on('SIGUSR1', this.onEndProcess);
-    process.on('uncaughtException', this.onEndProcess);
+    process.on('SIGINT', () => this.onEndProcess());
+    process.on('SIGUSR1', () => this.onEndProcess());
+    process.on('uncaughtException', () => this.onEndProcess());
 
     // @ifdef DEVELOPMENT
-    process.once('SIGUSR2', () => {
-      Dispatcher.dispatch(RUNTIME__END)
-        .then(() => process.kill(process.pid, 'SIGUSR2'));
-    });
+    process.once('SIGUSR2', () => Dispatcher.dispatch(RUNTIME__END).then(() => process.kill(process.pid, 'SIGUSR2')));
 
     return;
     // @endif
 
     /* eslint-disable no-unreachable */
-    process.on('SIGUSR2', this.onEndProcess);
+    process.on('SIGUSR2', () => this.onEndProcess());
   }
 
 }
