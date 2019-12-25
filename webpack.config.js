@@ -52,7 +52,6 @@ module.exports = function() {
         extensions: [ '.js', '.json', '.ts' ],
         modules: [
           path.join(__dirname, 'src/server'),
-          path.join(__dirname, 'src/shared'),
           'node_modules',
         ],
       },
@@ -181,7 +180,6 @@ module.exports = function() {
       mainFields: [ 'svelte', 'browser', 'module', 'main' ],
       modules: [
         path.join(__dirname, 'src/app'),
-        path.join(__dirname, 'src/shared'),
         'node_modules',
       ],
     },

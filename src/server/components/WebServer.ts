@@ -7,8 +7,9 @@ import path from 'path';
 
 import { RUNTIME__END, RUNTIME__START } from '../dictionary/actions';
 import Dispatcher from '../helpers/Dispatcher';
+import book from '../routes/book';
 
-export default class ExpressServer {
+export default class WebServer {
 
   /**
    * The maximum size of a request's body.
@@ -50,11 +51,14 @@ export default class ExpressServer {
     this._app.use(compression());
 
     /* Parses the Body of the HTTP Request */
-    this._app.use(bodyParser.json({ limit: ExpressServer.PAYLOAD_LIMIT }));
-    this._app.use(bodyParser.urlencoded({ extended: false, limit: ExpressServer.PAYLOAD_LIMIT }));
+    this._app.use(bodyParser.json({ limit: WebServer.PAYLOAD_LIMIT }));
+    this._app.use(bodyParser.urlencoded({ extended: false, limit: WebServer.PAYLOAD_LIMIT }));
 
     /* Provides Access to the Public Directory */
     this._app.use(express.static(path.resolve(__dirname, '../public')));
+
+    /* API Routers */
+    this._app.use('/v1', book);
 
     /* Homepage Route */
     this._app.get('*', (req, res) => {
@@ -70,7 +74,7 @@ export default class ExpressServer {
       return;
     }
 
-    console.log(chalk.cyan.bold(`\nClosing ${chalk.blue(`http://localhost:${ExpressServer.PORT}`)}`));
+    console.log(chalk.cyan.bold(`\nClosing ${chalk.blue(`http://localhost:${WebServer.PORT}`)}`));
 
     this._server.close();
     this._server = null;
@@ -81,8 +85,8 @@ export default class ExpressServer {
    */
   onStartServer(): Promise<void> {
     return new Promise((resolve) => {
-      this._server = this._app.listen(ExpressServer.PORT, () => {
-        console.log(chalk.cyan.bold(`\nListening to ${chalk.blue(`http://localhost:${ExpressServer.PORT}`)}`));
+      this._server = this._app.listen(WebServer.PORT, () => {
+        console.log(chalk.cyan.bold(`\nListening to ${chalk.blue(`http://localhost:${WebServer.PORT}`)}`));
         resolve();
       });
     })

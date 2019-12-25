@@ -40,7 +40,7 @@ module.exports = {
     'no-template-curly-in-string': 2,
 
     /* Best Practices */
-    'array-callback-return': 2,
+    'array-callback-return': 0,
     'block-scoped-var': 2,
     'class-methods-use-this': 2,
     'complexity': [ 2, 20 ],
@@ -136,7 +136,7 @@ module.exports = {
     'no-plusplus': [ 1, { 'allowForLoopAfterthoughts': true } ],
     'no-tabs': 1,
     'no-trailing-spaces': 1,
-    'no-underscore-dangle': [ 1, { 'allowAfterSuper': true, 'allowAfterThis': true, 'enforceInMethodNames': false } ],
+    'no-underscore-dangle': 0,
     'no-unneeded-ternary': 1,
     'no-whitespace-before-property': 1,
     'nonblock-statement-body-position': [ 1, 'below' ],
@@ -169,7 +169,7 @@ module.exports = {
     'semi': 'off',
     'semi-spacing': 1,
     'semi-style': [ 1, 'last' ],
-    'sort-keys': 1,
+    'sort-keys': [ 1, 'asc', { 'caseSensitive': false } ],
     'sort-vars': [ 1, { 'ignoreCase': true } ],
     'space-before-blocks': 1,
     'space-before-function-paren': [ 1, 'never' ],
