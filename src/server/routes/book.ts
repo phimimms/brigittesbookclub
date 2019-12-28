@@ -57,78 +57,6 @@ router.route('/book')
     });
   }));
 
-router.route('/book/:bookId')
-
-  /**
-   * Gets the book by its identifier.
-   */
-  .get((req, res) => new Promise((resolve) => {
-    const { params: { bookId } } = req;
-
-    Book.findById(bookId, (error, book) => {
-      if (error) {
-        resolve(res.status(500).send({ error }));
-
-        return;
-      }
-
-      resolve(res.json(book));
-    });
-  }))
-
-  /**
-   * Updates the book as specified by the body of the request.
-   */
-  .put((req, res) => {
-    const {
-      body,
-      params: { bookId },
-    } = req;
-
-    return new Promise((resolve) => Book.findById(bookId, (error, book) => {
-      if (error) {
-        resolve(res.status(500).send({ error }));
-
-        return;
-      }
-
-      if (body.eTag !== book.eTag) {
-        resolve(res.status(412).send({ error: RESOURCE__OUTDATED, resource: book }));
-
-        return;
-      }
-
-      const updatedBook = updateCacheProps(Object.assign(book, body));
-
-      updatedBook.save((e) => {
-        if (e) {
-          resolve(res.status(500).send({ error: e }));
-
-          return;
-        }
-
-        resolve(res.json(updatedBook));
-      });
-    }));
-  })
-
-  /**
-   * Deletes the book by its identifier.
-   */
-  .delete((req, res) => new Promise((resolve) => {
-    const { params: { bookId } } = req;
-
-    Book.findByIdAndRemove(bookId, (error) => {
-      if (error) {
-        resolve(res.status(500).send({ error }));
-
-        return;
-      }
-
-      resolve(res.send(bookId));
-    });
-  }));
-
 router.route('/book/rent/cancel')
 
   /**
@@ -192,7 +120,7 @@ router.route('/book/rent/cancel')
         return;
       }
 
-      rentRequests = rentRequests.filter((u) => u !== userId);
+      rentRequests = rentRequests.filter((id) => id !== userId);
 
       const updatedBook = updateCacheProps(Object.assign(book, { rentRequests }));
 
@@ -355,6 +283,78 @@ router.route('/book/rent/return')
 
         resolve(res.json(updatedBook));
       });
+    });
+  }));
+
+router.route('/book/:bookId')
+
+  /**
+   * Gets the book by its identifier.
+   */
+  .get((req, res) => new Promise((resolve) => {
+    const { bookId } = req.params;
+
+    Book.findById(bookId, (error, book) => {
+      if (error) {
+        resolve(res.status(500).send({ error }));
+
+        return;
+      }
+
+      resolve(res.json(book));
+    });
+  }))
+
+  /**
+   * Updates the book as specified by the body of the request.
+   */
+  .put((req, res) => {
+    const {
+      body,
+      params: { bookId },
+    } = req;
+
+    return new Promise((resolve) => Book.findById(bookId, (error, book) => {
+      if (error) {
+        resolve(res.status(500).send({ error }));
+
+        return;
+      }
+
+      if (body.eTag !== book.eTag) {
+        resolve(res.status(412).send({ error: RESOURCE__OUTDATED, resource: book }));
+
+        return;
+      }
+
+      const updatedBook = updateCacheProps(Object.assign(book, body));
+
+      updatedBook.save((e) => {
+        if (e) {
+          resolve(res.status(500).send({ error: e }));
+
+          return;
+        }
+
+        resolve(res.json(updatedBook));
+      });
+    }));
+  })
+
+  /**
+   * Deletes the book by its identifier.
+   */
+  .delete((req, res) => new Promise((resolve) => {
+    const { params: { bookId } } = req;
+
+    Book.findByIdAndRemove(bookId, (error) => {
+      if (error) {
+        resolve(res.status(500).send({ error }));
+
+        return;
+      }
+
+      resolve(res.send(bookId));
     });
   }));
 

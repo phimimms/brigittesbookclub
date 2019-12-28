@@ -236,7 +236,16 @@ module.exports = {
   'settings': {
     'import/resolver': {
       'webpack': {
-        'config': 'webpack.config.js',
+        'config': {
+          'resolve': {
+            'extensions': [ '.ts', '.mjs', '.svelte', '.js', '.json' ],
+            'modules': [
+              'src/app',
+              'src/server',
+              'node_modules',
+            ],
+          },
+        },
       },
     },
     'svelte3/ignore-styles': () => true,

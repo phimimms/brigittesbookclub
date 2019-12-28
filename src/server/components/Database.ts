@@ -43,11 +43,22 @@ export default class Database {
     this._reconnectTimeout = null;
 
     Dispatcher.on(RUNTIME__END, () => this._onDisconnectDatabase(), this);
-    Dispatcher.on(RUNTIME__START, () => this._onConnectDatabase(), this);
+    Dispatcher.on(RUNTIME__START, () => Database._onConnectDatabase(), this);
 
     mongoose.set('useFindAndModify', false);
 
     this._onRegisterEventHandlers();
+  }
+
+  /**
+   * Connects to MongoDB.
+   */
+  private static _onConnectDatabase(): void {
+    mongoose.connect(`mongodb://${Database.ADDRESS}:${Database.PORT}/brigittesbookclub`, {
+      useCreateIndex: true,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
   }
 
   /**
@@ -56,16 +67,6 @@ export default class Database {
   private _onCancelReconnection(): void {
     clearTimeout(this._reconnectTimeout);
     this._reconnectTimeout = null;
-  }
-
-  /**
-   * Connects to MongoDB.
-   */
-  private _onConnectDatabase(): void { // eslint-disable-line class-methods-use-this
-    mongoose.connect(`mongodb://${Database.ADDRESS}:${Database.PORT}/brigittesbookclub`, {
-      useCreateIndex: true,
-      useNewUrlParser: true,
-    });
   }
 
   /**
@@ -91,7 +92,7 @@ export default class Database {
     const reconnectingMessage = `\n${chalk.bold('Reconnecting to MongoDB')} in ${durationInSeconds} seconds`;
     console.log(chalk.cyan(`${reconnectingMessage}... (${this._reconnectAttempts})`));
 
-    this._reconnectTimeout = global.setTimeout(() => this._onConnectDatabase(), Database.RECONNECT_TIMEOUT_DURATION);
+    this._reconnectTimeout = global.setTimeout(() => Database._onConnectDatabase(), Database.RECONNECT_TIMEOUT_DURATION);
   }
 
   /**

@@ -13,7 +13,7 @@
     "dev": "concurrently \"npm:dev:app\" \"npm:dev:svr\"",
     "dev:app": "cross-env PROJECT_SRC=app NODE_ENV=development webpack-dev-server --mode development",
     "dev:svr": "cross-env PROJECT_SRC=svr NODE_ENV=development webpack --mode development",
-    "lint": "eslint src/app src/server",
+    "lint": "eslint src/app src/server --ext .svelte --ext .ts",
     "start": "node build/server.js",
     "start:dev": "nodemon --inspect build/server.js --watch build/server.js -L -q",
     "test": "jest --config jest.config.js"
@@ -24,8 +24,9 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "@types/express": "^4.17.2",
-    "@types/jest": "^24.0.24",
+    "@types/jest": "^24.0.25",
     "@types/node": "^12.12.21",
+    "@types/passport": "^1.0.2",
     "@types/webpack": "^4.41.0",
     "@types/webpack-dev-server": "^3.9.0",
     "@types/webpack-env": "^1.14.1",
@@ -55,7 +56,7 @@
     "precss": "^4.0.0",
     "preprocess-loader": "^0.3.0",
     "rimraf": "^3.0.0",
-    "svelte": "^3.16.5",
+    "svelte": "^3.16.7",
     "svelte-loader": "^2.13.6",
     "svelte-preprocess": "^3.3.0",
     "ts-jest": "^24.2.0",
@@ -71,13 +72,19 @@
     "webpack-shell-plugin": "^0.5.0"
   },
   "dependencies": {
+    "bcrypt": "^3.0.7",
     "body-parser": "^1.19.0",
     "chalk": "^3.0.0",
     "compression": "^1.7.4",
     "crypto": "^1.0.1",
     "express": "^4.17.1",
-    "mongoose": "^5.8.2",
+    "express-session": "^1.17.0",
+    "helmet": "^3.21.2",
+    "mongoose": "^5.8.3",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
     "perfect-scrollbar": "^1.4.0",
+    "query-string": "^6.9.0",
     "string-template": "^1.0.0"
   }
 }

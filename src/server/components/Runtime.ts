@@ -1,28 +1,28 @@
 import { RUNTIME__END } from '../dictionary/actions';
 import Dispatcher from '../helpers/Dispatcher';
 
-export default class Runtime {
+export default class Runtime { // eslint-disable-line @typescript-eslint/no-extraneous-class
 
   constructor() {
-    this.onRegisterEventHandlers();
+    Runtime._onRegisterEventHandlers();
   }
 
   /**
    * Terminates the Node process.
    */
-  onEndProcess(): void { // eslint-disable-line class-methods-use-this
+  private static _onEndProcess(): void {
     Dispatcher.dispatch(RUNTIME__END).then(() => process.exit()); // eslint-disable-line no-process-exit
   }
 
   /**
    * Subscribes to the events of the Node process.
    */
-  onRegisterEventHandlers(): void {
+  private static _onRegisterEventHandlers(): void {
     process.stdin.resume();
 
-    process.on('SIGINT', () => this.onEndProcess());
-    process.on('SIGUSR1', () => this.onEndProcess());
-    process.on('uncaughtException', () => this.onEndProcess());
+    process.on('SIGINT', () => Runtime._onEndProcess());
+    process.on('SIGUSR1', () => Runtime._onEndProcess());
+    process.on('uncaughtException', () => Runtime._onEndProcess());
 
     // @ifdef DEVELOPMENT
     process.once('SIGUSR2', () => Dispatcher.dispatch(RUNTIME__END).then(() => process.kill(process.pid, 'SIGUSR2')));
@@ -31,7 +31,7 @@ export default class Runtime {
     // @endif
 
     /* eslint-disable no-unreachable */
-    process.on('SIGUSR2', () => this.onEndProcess());
+    process.on('SIGUSR2', () => Runtime._onEndProcess());
   }
 
 }
